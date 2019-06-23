@@ -1,6 +1,9 @@
 package pl.coderslab.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.pl.NIP;
+import org.hibernate.validator.constraints.pl.REGON;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,7 +16,12 @@ public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
+    @NotBlank
     private String name;
+    @NIP
+    private String nip;
+    @REGON
+    private String regon;
 
     @OneToMany(mappedBy = "publisher", fetch = FetchType.EAGER)
     @JsonIgnore
@@ -41,6 +49,22 @@ public class Publisher {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
+    public String getRegon() {
+        return regon;
+    }
+
+    public void setRegon(String regon) {
+        this.regon = regon;
     }
 
     @Override

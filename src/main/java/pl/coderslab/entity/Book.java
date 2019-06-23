@@ -1,6 +1,13 @@
 package pl.coderslab.entity;
 
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,9 +19,18 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.TABLE )
     private Long id;
     @Column(unique = false, nullable = false, length = 100, name = "myTitle")
+    @Size(min = 5)
     private String title;
+    @Min(1)
+    @Max(10)
+    private Integer rating;
+    @Size(max = 600)
+    private String description;
     @ManyToMany(fetch = FetchType.EAGER)
+    @NotEmpty
     private List<Author> authors;
+    @Min(2)
+    private Integer pages;
     //gettery i settery
     @Column(name = "created_on")
     private LocalDateTime createdOn;
@@ -22,6 +38,7 @@ public class Book {
     private LocalDateTime updatedOn;
     @ManyToOne()
     @JoinColumn(name = "publisher_id")
+    @NotNull
     private Publisher publisher;
 
     @PrePersist
@@ -80,6 +97,30 @@ public class Book {
 
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getPages() {
+        return pages;
+    }
+
+    public void setPages(Integer pages) {
+        this.pages = pages;
     }
 
     @Override
