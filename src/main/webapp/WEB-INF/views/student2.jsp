@@ -23,14 +23,8 @@
     <form:form method="POST" modelAttribute="student">
         First name: <form:input path="firstName"/><br>
         Last name: <form:input path="lastName"/><br>
-        <p>Gender: </p>
-        <form:radiobuttons path="gender" items="${gender}"/><br>
-        Country: <form:select path="country" items="${countries}"/><br>
-        Notes:  <form:textarea  path="notes"/><br>
-        <form:checkbox label="mailing list" path="mailingList"/><br>
-        ProgrammingSkills: <form:select path="programmingSkills" items="${programmingSkills}" multiple="true"/><br>
-        Hobbies: <form:checkboxes  path="hobbies" items="${hobbies}"/><br>
-
+        <form:select path="studentGroup" items="${groups}"
+                     itemValue="id" itemLabel="name"/>
         <input type="submit" value="Save">
     </form:form>
 </body>
