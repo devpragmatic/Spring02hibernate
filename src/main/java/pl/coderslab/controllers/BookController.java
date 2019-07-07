@@ -5,11 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.dao.BookDao;
 import pl.coderslab.dao.PublisherDao;
 import pl.coderslab.entity.Author;
 import pl.coderslab.entity.Book;
+import pl.coderslab.entity.Category;
 import pl.coderslab.entity.Publisher;
+import pl.coderslab.repository.BookRepository;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
@@ -21,13 +22,13 @@ import java.util.Set;
 @RequestMapping("/books")
 public class BookController {
 
-    private final BookDao bookDao;
+    private final BookRepository bookRepository;
     private final PublisherDao publisherDao;
     private final Validator validator;
 
     @Autowired
-    public BookController(BookDao bookDao, PublisherDao publisherDao, Validator validator) {
-        this.bookDao = bookDao;
+    public BookController(BookRepository bookRepository, PublisherDao publisherDao, Validator validator) {
+        this.bookRepository = bookRepository;
         this.publisherDao = publisherDao;
         this.validator = validator;
     }
@@ -40,7 +41,7 @@ public class BookController {
 
     @GetMapping("/showAll")
     public String showAll(Model model){
-        model.addAttribute("books", bookDao.findAll());
+        model.addAttribute("books", bookRepository.findAll());
         return "showAllBooks";
     }
 
@@ -50,7 +51,7 @@ public class BookController {
         if(result.hasErrors()){
             return "book";
         }
-        bookDao.save(book);
+        bookRepository.save(book);
         return "redirect:showAll";
     }
 
@@ -62,6 +63,7 @@ public class BookController {
     @RequestMapping("/validate")
     @ResponseBody
     public String validateTest() {
+        bookRepository.findFirstByProvidedCategoryOrderByTitle(1);
         Book p2 = new Book();
         Set<ConstraintViolation<Book>> violations = validator.validate(p2);
         if (!violations.isEmpty()) {

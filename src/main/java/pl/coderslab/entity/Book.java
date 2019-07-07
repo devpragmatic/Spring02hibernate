@@ -41,6 +41,10 @@ public class Book {
     @NotNull
     private Publisher publisher;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @PrePersist
     public void prePersist() {
         createdOn = LocalDateTime.now();
@@ -121,6 +125,14 @@ public class Book {
 
     public void setPages(Integer pages) {
         this.pages = pages;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
